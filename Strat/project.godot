@@ -1,0 +1,46 @@
+; Engine configuration file.
+; It's best edited using the editor UI and not directly,
+; since the parameters that go here are not all obvious.
+;
+; Format:
+;   [section] ; section goes between []
+;   param=value ; assign values to parameters
+
+config_version=5
+
+[application]
+
+config/name="Global Warfare: Modern Conflict"
+config/description="Global Warfare: Modern Conflict is an immersive 4X strategy game that plunges you into a world of international diplomacy, resource management, and tactical warfare. As a supreme leader, you'll forge alliances, build armies, and command a vast array of land, air, and naval forces. Customize your military strategy, engage in epic battles, and conquer territories across diverse theaters of operation. From infantry to tanks, air forces, and naval fleets, the fate of nations lies in your hands. Can you lead your forces to victory and establish your dominance on the global stage?"
+run/main_scene="res://main.tscn"
+config/features=PackedStringArray("4.2")
+config/icon="res://icon.png"
+config/macos_native_icon="res://icon.icns"
+config/windows_native_icon="res://icon.ico"
+
+[autoload]
+
+Server="*res://server.gd"
+
+[display]
+
+window/size/viewport_width=1080
+window/size/viewport_height=1920
+window/stretch/mode="viewport"
+
+[gui]
+
+common/drop_mouse_on_gui_input_disabled=true
+
+[mono]
+
+project/assembly_name="Strat"
+
+[physics]
+
+common/enable_pause_aware_picking=true
+
+[rendering]
+
+environment/defaults/default_environment="res://default_env.tres"
+vram_compression/import_etc=true

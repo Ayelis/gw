@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<title>Global Warfare</title>
+		<link rel="icon" type="image/x-icon" sizes="256x256" href="./icon.ico">
+		<link rel="icon" type="image/x-icon" href="./icon.ico">
+		<link rel="stylesheet" type="text/css" href="./css/styles.css">
+		<script src="./libraries/jquery-3.6.0.min.js"></script>
+		<script src="https://cdn.jsdelivr.net/npm/@panzoom/panzoom@4.5.0/dist/panzoom.min.js"></script>
+		<script src="./js/functions.js" type="text/javascript"></script>
+	</head>
+	<body>
+		<main id="app">
+			<audio id="backgroundMusic" src="./sfx/mus-legionnaire.ogg" type="audio/ogg" preload="auto" autoplay loop hidden></audio>
+			<section class="panel" id="panel1">
+				<div id="top">
+					<img src="./img/logo.png" alt="Global Warfare: Modern Conflict">
+				</div>
+				<div id="bottom">
+					<button id="joinGameButton">Join Game</button>
+				</div>
+			</section>
+			<section class="panel" id="panel2">
+			    <div id="mapContainer" style="overflow:hidden;user-select:none;touch-action:none;">
+			    	<div id="mapWrapper" style="cursor: move; user-select: none; touch-action: none; transform-origin: 50% 50%; transition: none; transform: scale(1);">
+						<img id="mapImage" src="./img/world.svg" alt="War Map" border=1>
+					</div>
+				</div>
+				<button id="zoom-in">Zoom In</button>
+				<button id="zoom-out">Zoom Out</button>
+			</section>
+		</main>
+	</body>
+</html>
