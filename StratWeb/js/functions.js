@@ -29,9 +29,6 @@ $(document).ready(function() {
         step: 0.3,
         contain: 'outside'
     });
-    // Zoom with buttons
-    const zoomInButton = document.getElementById('zoom-in');
-    const zoomOutButton = document.getElementById('zoom-out');
     // Zoom with wheel
     elem.addEventListener('wheel', panzoom.zoomWithWheel);
 
@@ -39,8 +36,6 @@ $(document).ready(function() {
     const map = document.getElementById('mapContainer');
     map.addEventListener("contextmenu", (e) => {e.preventDefault()});
 
-    zoomInButton.addEventListener('click', panzoom.zoomIn)
-    zoomOutButton.addEventListener('click', panzoom.zoomOut)
     resetButton.addEventListener('click', panzoom.reset)
     rangeInput.addEventListener('input', (event) => {
       panzoom.zoom(event.target.valueAsNumber)
