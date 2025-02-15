@@ -1,11 +1,15 @@
+html, body, canvas{
+	height:100vh;
+	width:100vw;
+}
 body{
 	margin:0px;
-	overflow:hidden;
 }
 canvas{
 	background-color:white;
-	height:100vh;
-	width:100vw;
+height:100%;
+width:100%;
+	display:block;
 }
 #mode{
 	position:absolute;

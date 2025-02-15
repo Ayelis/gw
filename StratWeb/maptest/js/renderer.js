@@ -1,19 +1,32 @@
+// Log issues to console?
+const DEBUG=true;
+
 // Make the paper scope global, by injecting it into window:
 paper.install(window);
 
 // Only executed our code once the DOM is ready.
 window.onload = function() {
-	// Get a reference to the canvas object if paper not scoped global
-	// var canvas = document.getElementById('myCanvas'); paper.setup(canvas);
-//INIT
+	//Stay in sync if the window resizes...
 	paper.setup('myCanvas');
+	const canvas = document.getElementById("myCanvas");
+	function resizeCanvas() {
+		if(DEBUG) console.log("Window size update!");
+		canvas.width = window.innerWidth;
+		canvas.height = window.innerHeight;
+		paper.view.viewSize = new paper.Size(window.innerWidth, window.innerHeight);
+	}
+	window.addEventListener("resize", resizeCanvas);
+	resizeCanvas(); // initial setup
+
+//INIT
 	var paths = [], units = [];
+	var unitsCount=0;
 	var tool = new paper.Tool();
-	let touch = { //mode, type, id
-		mode:0, //[0-select, 1-move, 2-new dot(dev)]
-		selected:0, //[0-unselected, 1-unit, 2-terrain]
-		which:0, //[id of terrain/unit]
-		next:0,
+	let touch = { //mode, selected(0none, 1unit, 2land), which, next
+		mode:0, //[0-build, 1-select, 2-move]
+		selected:0, //[0-unselected, 1-unit, 2-land]
+		which:0, //[id of unit/land]
+		next:0, //id of next unit in selection queue
 	};
 	var player = { //id, name, xp
 		id:0,
@@ -25,13 +38,16 @@ window.onload = function() {
 		let buttonmode = incButtonmode();
 		switch(buttonmode){
 			case 1:
-				button.value="Mode: Move";
+				button.value="Mode: Select";
+				if(DEBUG) console.log("ENTERING SELECT MODE");
 			break;
 			case 2:
-				button.value="Mode: Build";
+				button.value="Mode: Move";
+				if(DEBUG) console.log("ENTERING MOVE MODE");
 			break;
 			default:
-				button.value="Mode: Select";
+				button.value="Mode: Build";
+				if(DEBUG) console.log("ENTERING BUILD MODE");
 		}
 	};
 	function incButtonmode(){
@@ -69,65 +85,59 @@ window.onload = function() {
 		unpickAllLands();
 		touch.selected=0;
 		touch.which=0;
-		console.log("Select Nothing!");
+		if(DEBUG) console.log("Select Nothing!");
 	}
 	function buildUnit(id){
-		console.log("Building unit "+id+"...");
 		if(typeof(units[id]) == typeof(undefined)){
-			console.log("No unit exists yet, perfect!");
 			units[id]=drawUnitPoint(-10,-10,'black');
-			console.log("Unit added to draw queue");
+			if(DEBUG) console.log("Building unit "+id+"...");
+			pickUnit(id);
+			unitsCount++;
+		}else{
+			if(DEBUG) console.log("ERROR: Unit ["+id+"] not built!");
 		}
-		pickUnit(id);
-		console.log("Unit selected");
 	}
 	function pickUnit(id){ //picks a single unit by id
 		unpickAllUnits();
-		console.log("Unselected everything else");
 		touch.selected=1;
-		console.log("Selection mode implemented");
 		if(typeof(units[id]) != typeof(undefined)){
+			rect.selected = false;
+			rect.fillColor="lightgreen";
 			touch.which=id;
-			console.log("Selected unit: "+id);
+			if(DEBUG) console.log("Selected unit: "+id);
 			units[id].fillColor='red';
-			console.log("Dot highlighted");
 			touch.next=id+1;
 		}else{
-			console.log("ERROR! Undefined ID! Unit "+id+" doesn't exist!");
 			touch.next=0;
 			touch.which=0;
 			touch.selected=0;
+			if(DEBUG) console.log("Terrain Selected!");
+			rect.selected = true;
+			rect.fillColor="#ccffcc";
 		}
 	}
 	function pickLand(id){ //picks a land by id
 		touch={selected:2,which:+id};
-		console.log("Select land: "+id);
+		if(DEBUG) console.log("Select land: "+id);
 	}
 	function doTouch(point){ //todo: Remove arbitrary selection test code
-		console.log(touch);
 		switch(touch.mode){
-			case 2: //new unit
-				console.log("ENTERING BUILD MODE");
-				console.log(touch.next);
-				let newguy = touch.next||0;
-				buildUnit(newguy);
-				units[newguy].position = point; //move the new unit
-			break;
-			case 1: //move unit //teleport!!
-				console.log("ENTERING MOVE MODE");
+			case 2: //move unit // TELEPORT!!
 				if(typeof(units[touch.which]) != typeof(undefined)){
-					if(touch.selected==1)
+					if(touch.selected==1){
 						units[touch.which].position = point; //move the 0th unit
+						if(DEBUG) console.log("Unit "+touch.which+" moved to "+point);
+					}else{
+						if(DEBUG) console.log("Warning! Unit not selected!");						
+					}
 				}else{
-					console.log("ERROR! Undefined ID: "+touch.which);
+					if(DEBUG) console.log("ERROR! Undefined ID: "+touch.which);
 				}
 			break;
-			default:
-				console.log("ENTERING SELECT MODE");
-				if(touch.selected==0 && touch.which==0){
-					touch.selected = 1;
-					pickUnit(touch.next); //select this one
-				}else if(touch.selected == 1){
+			case 1: //select object // TOGGLE!!
+				if(touch.selected==0 && touch.which==0)
+					touch.selected = 1;				
+				if(touch.selected == 1){
 					//cycle through units
 					pickUnit(touch.next); //select this one
 					if(touch.which == units.count)
@@ -135,6 +145,11 @@ window.onload = function() {
 				}else{
 					//whatever lol
 				}
+			break;
+			default: //build unit // ANYWHERE!!
+				let newguy = unitsCount;
+				buildUnit(newguy);
+				units[newguy].position = point; //move the new unit
 			break;
 		}
 	}
@@ -150,10 +165,9 @@ window.onload = function() {
 //DEFINE ARBITRARY BG STUFF
 	// Terrain
 	var rect = new Path.Rectangle({
-		point: [0, 0],
-		size: [view.size.width, view.size.height],
-		strokeColor: 'lightgreen',
-		fillColor: 'lightgreen',
+		point: [0, 0], //display origin
+		size: [7680,4320], //8k
+		fillColor: 'lightgreen', //grass
 		selected: false
 	}); rect.sendToBack();
 	let nodes = [
@@ -165,5 +179,11 @@ window.onload = function() {
 	//Paths
 	nodes.forEach(row=>{
 		addPath(row[0],row[1], row[2],row[3]);
+	});
+}
+//TICK
+function onFrame(){
+	units.forEach(unit=>{
+		unit.position += unit.delta;
 	});
 }
