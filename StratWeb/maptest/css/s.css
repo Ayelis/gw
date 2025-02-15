@@ -1,0 +1,14 @@
+body{
+	margin:0px;
+	overflow:hidden;
+}
+canvas{
+	background-color:white;
+	height:100vh;
+	width:100vw;
+}
+#mode{
+	position:absolute;
+	left:0px;
+	top:0px;
+}
