@@ -1,4 +1,6 @@
 // units.js
+import { DEBUG } from './main.js';
+
 export class Unit {
 	constructor(id, point, type = 3, speed = 1, owner = 0, graphic = null, destination = null) {
 		this.id = id;
@@ -24,7 +26,7 @@ export class Unit {
 		if (distance < this.speed * delta * 20) {
 			this.position = this.destination.clone();
 			this.destination = null;
-			console.log("Point reached, stopping!");
+			if (DEBUG) console.log("Point reached, stopping!");
 		} else {
 			let step = vector.normalize().multiply(this.speed * delta * 20);
 			this.position = this.position.add(step); // Update logical position
