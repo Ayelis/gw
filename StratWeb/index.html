@@ -4,12 +4,14 @@
 		<meta charset="UTF-8">
 		<meta name="viewport" content="width=device-width, initial-scale=1.0">
 		<title>Global Warfare</title>
-		<link rel="icon" type="image/x-icon" sizes="256x256" href="./icon.ico">
-		<link rel="icon" type="image/x-icon" href="./icon.ico">
+		<link rel="icon" type="image/x-icon" sizes="256x256" href="./favicon.ico">
+		<link rel="icon" type="image/x-icon" href="./favicon.ico">
 		<link rel="stylesheet" type="text/css" href="./css/styles.css">
-		<script src="./libraries/jquery-3.6.0.min.js"></script>
-		<script src="https://cdn.jsdelivr.net/npm/@panzoom/panzoom@4.5.0/dist/panzoom.min.js"></script>
+		<link rel="stylesheet" href="./css/map.css">
+		<script src="./libraries/jquery-3.6.0.min.js" type="text/javascript"></script>
 		<script src="./js/functions.js" type="text/javascript"></script>
+		<script src="./js/paper.js" type="text/javascript"></script>
+		<script type="module" src="./js/main.js"></script>
 	</head>
 	<body>
 		<main id="app">
@@ -23,11 +25,11 @@
 				</div>
 			</section>
 			<section class="panel" id="panel2">
-			    <div id="mapContainer" style="overflow:hidden;user-select:none;touch-action:none;">
-			    	<div id="mapWrapper" style="cursor: move; user-select: none; touch-action: none; transform-origin: 50% 50%; transition: none; transform: scale(1);">
-						<img id="mapImage" src="./img/world.svg" alt="War Map" border=1>
-					</div>
-				</div>
+				<canvas id="myCanvas"></canvas>
+				<input id="mode" type=button value="Mode: Build">
+				<!--	div id="mapWrapper" style="cursor: move; user-select: none; touch-action: none; transform-origin: 50% 50%; transition: none; transform: scale(1);">
+					<img id="mapImage" src="./img/world.svg" alt="War Map" border=1>
+				</div-->
 			</section>
 		</main>
 	</body>
