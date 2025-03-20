@@ -1,7 +1,7 @@
 import { DEBUG } from './index.js';
 import { touch,units } from './engine-gamestate.js';
 import { translateView, doCanvasResize } from "./engine-renderer.js";
-import { toggleSelect,buildUnit } from "./engine-game.js";
+import { toggleSelect,buildUnit } from "./engine-gameinteract.js";
 
 export const buttonMove = document.getElementById("move");
 export const buttonBuild = document.getElementById("build");
@@ -51,12 +51,15 @@ function doModeSelect(){
 		touch.mode=1;
 	}
 	let point = {x:0,y:0};
-	toggleSelect(point);
 }
 function doModeMove(){
 	if(DEBUG) console.log("[Move Mode selected]");
 	if(units.length===0){
 		if(DEBUG) console.log("No units to move! Canceling...");
+		return;
+	}
+	if(touch.selected !== 1){
+		if(DEBUG) console.log("Unit not selected! Canceling...");
 		return;
 	}
 	buttonBuild.value="Build";
