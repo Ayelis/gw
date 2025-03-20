@@ -1,9 +1,7 @@
-//get variables
-import { DEBUG,touch,units } from './main.js';
-import { button, translateView } from './renderer.js';
-//get functions
-import { doCanvasResize } from "./renderer.js";
-import { toggleSelect,buildUnit } from "./game.js";
+import { DEBUG } from './index.js';
+import { touch,units } from './engine-gamestate.js';
+import { button, translateView, doCanvasResize } from "./engine-renderer.js";
+import { toggleSelect,buildUnit } from "./engine-game.js";
 
 let isPanning = false;
 let startPoint = null;

@@ -1,9 +1,8 @@
-//get variables
-import { DEBUG,touch,units } from './main.js';
-import { button,terrain } from './renderer.js';
-//get functions
-import { drawUnitPoint } from "./renderer.js";
-import { Unit } from "./unit.js"; //(id, point, x, y, type, speed, owner, graphic)
+import { DEBUG } from './index.js';
+import { touch,units } from './engine-gamestate.js';
+import { button,drawUnitPoint } from "./engine-renderer.js";
+import { Unit } from "./class-unit.js"; //(id, point, x, y, type, speed, owner, graphic)
+import { Territory } from "./class-territory.js"; //(id, owner, terrainType, originCountry, coordinates)
 
 	//Selection variables for toggleSelect
 	const selectionRadius = 50;
@@ -73,9 +72,8 @@ function unpickAllUnits(){ //not optimized, just unpick selected unit list!
 	}
 }
 function unpickAllLands(){ //unfinished
-	//deselect the square that exists
-	terrain.selected = false;
-	terrain.fillColor = "lightgreen";
+	// Keep track of terrain selected
+	// Unhighlight terrain
 	if (touch.selected === 2) { // Only clear selection if land was selected
 		touch.selected = 0;
 		touch.which = 0;
@@ -104,6 +102,6 @@ function pickLand(id){ //picks a land by id
 	unpickAllUnits();
 	touch.selected=2;touch.which=id;
 	if(DEBUG) console.log("Select land: "+id);
-	terrain.selected = true;
-	terrain.fillColor = "#ccffcc"; // Highlight terrain
+	// Keep track of terrain selected
+	// Highlight terrain
 }

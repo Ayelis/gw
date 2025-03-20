@@ -1,8 +1,10 @@
-import { DEBUG, initializeGame, gameLoop, nodes, paths, land } from './main.js';
+import { DEBUG } from './index.js';
+import { initializeGame } from './engine-gameinit.js';
+import { gameLoop } from './engine-gameloop.js';
+import { paths } from './engine-gamestate.js';
 
 export const button = document.getElementById("mode");
 const canvas = document.getElementById("myCanvas");
-export let terrain = [];
 
 // Make the paper scope global, by injecting it into window:
 paper.install(window);
@@ -23,6 +25,8 @@ export function drawUnitPoint(x, y, c) {
     });
 }
 export function drawPath(a, b, c, d) {
+	console.log("a,b",a,b);
+	console.log("c,d",c,d);
     var pl = paths.length || 0;
     paths[pl] = new Path();
     paths[pl].strokeColor = 'gray';
@@ -37,16 +41,5 @@ export function translateView(delta) {
 
 // Only execute our code once the DOM is ready.
 window.onload = function() {
-    paper.setup('myCanvas');
-
-	terrain = new Path.Rectangle(land); terrain.sendToBack();
-
-    initializeGame();
-
-    // TICK
-    view.onFrame = function(event) {
-        gameLoop(event.delta);
-    }
-
     doCanvasResize(); // initial setup
 }

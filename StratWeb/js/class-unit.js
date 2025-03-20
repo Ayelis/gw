@@ -1,5 +1,5 @@
 // units.js
-import { DEBUG } from './main.js';
+import { DEBUG } from './index.js';
 
 export class Unit {
 	constructor(id, point, type = 3, speed = 1, owner = 0, graphic = null, destination = null) {

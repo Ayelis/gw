@@ -1,13 +1,13 @@
-$(document).ready(function() {
-	// Override addEventListener to force passive for touchstart
-	const originalAddEventListener = EventTarget.prototype.addEventListener;
-	EventTarget.prototype.addEventListener = function(type, listener, options) {
-	  if (type === "touchstart" || type === "touchmove") {
-		options = { passive: true, ...options };
-	  }
-	  originalAddEventListener.call(this, type, listener, options);
-	};
+// Override addEventListener to force passive for touchstart and touchmove
+const originalAddEventListener = EventTarget.prototype.addEventListener;
+EventTarget.prototype.addEventListener = function(type, listener, options) {
+  if (type === "touchstart" || type === "touchmove") {
+    options = { passive: true, ...options };
+  }
+  originalAddEventListener.call(this, type, listener, options);
+};
 
+$(document).ready(function() {
 	// Play the audio when logo is clicked, if not playing already
     var audio = document.getElementById("backgroundMusic");
     $("#top img").click(function() {

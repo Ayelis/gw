@@ -8,12 +8,12 @@
 		<link rel="icon" type="image/x-icon" href="./favicon.ico">
 		<link rel="stylesheet" type="text/css" href="./css/styles.css">
 		<link rel="stylesheet" href="./css/map.css">
-		<script src="./libraries/jquery-3.6.0.min.js" type="text/javascript"></script>
-		<script src="./js/functions.js" type="text/javascript"></script>
-		<script src="./js/paper.js" type="text/javascript"></script>
-		<script type="module" src="./js/main.js"></script>
+		<script src="./js/libraries/jquery-3.6.0.min.js" type="text/javascript"></script>
+		<script src="./js/util-functions.js" type="text/javascript"></script>
+		<script src="./js/libraries/papercore.js" type="text/javascript"></script>
+		<script src="./js/index.js" type="module"></script>
 	</head>
-	<body>
+	<body bgcolor="#113344">
 		<main id="app">
 			<audio id="backgroundMusic" src="./sfx/mus-legionnaire.ogg" type="audio/ogg" preload="auto" autoplay loop hidden></audio>
 			<section class="panel" id="panel1">
@@ -24,18 +24,17 @@
 					<button id="joinGameButton">Get Started</button>
 				</div>
 			</section>
-			<section class="panel" id="panel2">
+			<section class="panel" id="panel2" style="display: none;">
 				<canvas id="myCanvas"></canvas>
 				<input id="mode" type=button value="Mode: Build">
 
 				<nav>
-				  <button data-window="nation">Nation</button>
-				  <button data-window="policy">Policy</button>
-				  <button data-window="upgrades">Upgrades</button>
-				  <button data-window="exchange">Exchange</button>
-				  <button data-window="settings">Settings</button>
+				  <button data-window="nation" data-emoji="🏙️">Nation</button>
+				  <button data-window="policy" data-emoji="🏛️">Policy</button>
+				  <button data-window="upgrades" data-emoji="🛠️">Upgrades</button>
+				  <button data-window="exchange" data-emoji="💱">Exchange</button>
+				  <button data-window="settings" data-emoji="⚙️">Settings</button>
 				</nav>
-
 				<section id="nation-window" class="window">
 				  <h2>Nation</h2>
 				  <button class="close-btn">×</button>
