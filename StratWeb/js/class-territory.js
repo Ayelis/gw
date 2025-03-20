@@ -2,11 +2,10 @@
 import { DEBUG } from './index.js';
 
 export class Territory {
-  constructor(id, owner, terrainType, originCountry, coordinates) {
-    this.id = id; // Unique identifier
+  constructor(id, owner, terrainType, coordinates) {
+    this.id = id; // Unique identifier / origin country
     this.owner = owner; // Current owner UID (e.g., 12)
     this.terrainType = terrainType; // Terrain type (e.g., 1 = grassland)
-    this.originCountry = originCountry; // Originating country ID
     this.coordinates = coordinates; // Array of { x, y } points
     this.polygon = null; // Paper.js Path object
     this.buildings = []; // Array of buildings in the territory
