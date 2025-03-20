@@ -132,4 +132,42 @@ export function setupInputHandlers(tool, button, touch) {
 			case "b":doModeBuild();break;
 		}
 	});
+	
+	// Interface Button listeners
+	// Show window when nav button is clicked
+	document.querySelectorAll("nav button").forEach(button => {
+	  button.addEventListener("click", () => {
+		const windowId = button.getAttribute("data-window") + "-window";
+		const window = document.getElementById(windowId);
+		const overlay = document.querySelector(".overlay");
+
+			if (window && overlay) {
+			  window.classList.add("active");
+			  overlay.classList.add("active");
+			} else if (overlay) {
+			  console.error("window not found!");
+			} else if (window) {
+			  console.error("overlay not found!");
+			}
+	  });
+	});
+
+	// Close window when close button is clicked or clicking outside
+	document.querySelectorAll(".window").forEach(window => {
+	  window.addEventListener("click", (event) => {
+		if (event.target.classList.contains("close-btn") || event.target === window) {
+		  window.classList.remove("active");
+		  document.querySelector(".overlay").classList.remove("active");
+		}
+	  });
+	});
+
+	// Close window when clicking on the overlay
+	document.querySelector(".overlay").addEventListener("click", () => {
+	  document.querySelectorAll(".window").forEach(window => {
+		window.classList.remove("active");
+	  });
+	  document.querySelector(".overlay").classList.remove("active");
+	});
+
 }
