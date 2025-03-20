@@ -1,15 +1,17 @@
 import { DEBUG } from './index.js';
 import { touch,units } from './engine-gamestate.js';
-import { button, translateView, doCanvasResize } from "./engine-renderer.js";
+import { translateView, doCanvasResize } from "./engine-renderer.js";
 import { toggleSelect,buildUnit } from "./engine-game.js";
+
+export const buttonMove = document.getElementById("move");
+export const buttonBuild = document.getElementById("build");
 
 let isPanning = false;
 let startPoint = null;
 const panThreshold = 10; // Min pixels to trigger panning
 
 function doTouch(point){
-	if(DEBUG) console.log("TOUCHED at: "+point);
-	if(DEBUG) console.log("Touch: "+touch.mode+", "+touch.selected+", "+touch.which);
+	if(DEBUG) console.log("TOUCHED at: " + point + " | TouchType(MSW): "+touch.mode+", "+touch.selected+", "+touch.which);
 	switch(touch.mode){
 		case 2: //move unit
 			var id=touch.which;
@@ -23,6 +25,7 @@ function doTouch(point){
 			}else{
 				if(DEBUG) console.log("ERROR! Undefined ID: "+touch.which);
 			}
+			doModeSelect(); //and return to select mode
 		break;
 		case 1: //select object // TOGGLE!!
 			toggleSelect(point);
@@ -30,43 +33,35 @@ function doTouch(point){
 		default: //build unit // ANYWHERE!!
 			let newguy = units.length||0;
 			buildUnit(newguy,point,units);
+			doModeSelect(); //and return to select mode
 		break;
 	}
 }
 function doModeBuild(){
-	button.value="Mode: Build";		
+	if(DEBUG) console.log("[Build Mode selected]");
+	buttonMove.value="Move";
+	buttonBuild.value="Build!";
 	touch.mode=0;
 }
 function doModeSelect(){
+	if(DEBUG) console.log("[Select Mode selected]");
+	buttonMove.value="Move";
+	buttonBuild.value="Build";
 	if(touch.mode!=1){
-		button.value="Mode: Select";		
 		touch.mode=1;
 	}
 	let point = {x:0,y:0};
 	toggleSelect(point);
 }
 function doModeMove(){
-	button.value="Mode: Move";		
-	touch.mode=2;
-}
-function doButtonInc(mode){
-	if(isNaN(mode))mode=0;
-	mode++;
-	if(mode==3)mode=0;
-	return mode;
-}
-function doButtonClick(button,touch){
-	let buttonmode =touch.mode= doButtonInc(touch.mode);
-	switch(buttonmode){
-		case 1:
-			button.value="Mode: Select";
-		break;
-		case 2:
-			button.value="Mode: Move";
-		break;
-		default:
-			button.value="Mode: Build";
+	if(DEBUG) console.log("[Move Mode selected]");
+	if(units.length===0){
+		if(DEBUG) console.log("No units to move! Canceling...");
+		return;
 	}
+	buttonBuild.value="Build";
+	buttonMove.value="Move!";
+	touch.mode=2;
 }
 function onMouseWheel(event) {
     let zoomFactor = 1.05; // Zoom factor for each scroll step
@@ -118,15 +113,20 @@ export function setupInputHandlers(tool, button, touch) {
 			doTouch(event.point); // Call existing touch handler
 		};
 	}
-	button.addEventListener("click", ()=>{doButtonClick(button,touch);});
+	buttonBuild.addEventListener("click", ()=>{
+		doModeBuild();
+	});
+	buttonMove.addEventListener("click", ()=>{
+		doModeMove();
+	});
 	window.addEventListener("resize", doCanvasResize);
 	document.addEventListener("wheel", (event) => {
 		onMouseWheel(new paper.ToolEvent(event));
 	}, { passive: false });
 	document.addEventListener("keydown", (event) => {
 		switch (event.key.toLowerCase()) {
-			case "s":doModeSelect();break;
 			case "m":doModeMove();break;
+			case "s":doModeSelect();break;
 			case "b":doModeBuild();break;
 		}
 	});

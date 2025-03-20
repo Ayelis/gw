@@ -1,17 +1,16 @@
 import { DEBUG } from './index.js';
-import { touch,units } from './engine-gamestate.js';
-import { button,drawUnitPoint } from "./engine-renderer.js";
+import { touch,units,territories } from './engine-gamestate.js';
+import { drawUnitPoint } from "./engine-renderer.js";
 import { Unit } from "./class-unit.js"; //(id, point, x, y, type, speed, owner, graphic)
 import { Territory } from "./class-territory.js"; //(id, owner, terrainType, originCountry, coordinates)
 
-	//Selection variables for toggleSelect
-	const selectionRadius = 50;
-	let lastClickPoint;
-	let nearbyUnits = [];
+//Selection variables for toggleSelect
+const selectionRadius = 50;
+let lastClickPoint;
+let nearbyUnits = [];
 
 export function toggleSelect(point){ //temporary, select toggling, for testing only!
-	if (DEBUG) console.log("Point: "+JSON.stringify(point));
-	if (DEBUG) console.log("X: "+point.x+", Y: "+point.y);
+	if (DEBUG) console.log("Select X: "+point.x+", Y: "+point.y);
 
 	// Find all nearby units within selectionRadius, sorted by distance
 	let nearbyUnits = units
@@ -23,22 +22,36 @@ export function toggleSelect(point){ //temporary, select toggling, for testing o
 		.filter(u => u && u.dist <= selectionRadius)
 		.sort((a, b) => a.dist - b.dist);
 
-	if (nearbyUnits.length === 0) {
-		// No units nearby, just select the terrain
-		pickLand(0);
-		return;
-	}
-
+	let lastUnitSelected = false; // Reset the flag
 	let nextIndex = 0;
-
 	if (touch.selected === 1) {
+		if (DEBUG) console.log("Something's selected. Find out what!");
 		// Find the index of the currently selected unit
 		nextIndex = nearbyUnits.findIndex(u => u.id === touch.which) + 1;
+		if (DEBUG) console.log("Current: "+touch.which+" | Next: "+nextIndex+" | Nearby: "+nearbyUnits.length);
 		if (nextIndex >= nearbyUnits.length) {
-			// If we've cycled through all units, select the terrain
-			pickLand(0);
-			return;
+		if (DEBUG) console.log("Last Unit Selected, check territory!");
+			// If we've cycled through all units, set the flag
+			lastUnitSelected = true;
 		}
+	}
+	if (DEBUG) console.log("Checking territory next");
+	if (nearbyUnits.length === 0 || lastUnitSelected) {
+	if (DEBUG) console.log("No nearby units, or last unit selected. Checking for territory to select");
+		// No units nearby or we've cycled through all units, check for land!
+		const hitResult = paper.project.hitTest(point);
+		if (hitResult && hitResult.item) {
+			if (DEBUG) console.log("Hit!");
+			const territory = hitResult.item.data.territory;
+			if (territory) {
+				if (DEBUG) console.log("Selected territory:", territory.id);
+				pickLand(territory.id); // Select the clicked territory
+			} else {
+				if (DEBUG) console.log("Clicked on ocean or non-selectable area, all lands deselected");
+				unpickAllLands(); // Deselect all lands
+			}
+		}
+		return;
 	}
 
 	// Select the next unit in the cycle
@@ -72,8 +85,11 @@ function unpickAllUnits(){ //not optimized, just unpick selected unit list!
 	}
 }
 function unpickAllLands(){ //unfinished
-	// Keep track of terrain selected
-	// Unhighlight terrain
+	// Deselect all lands
+	territories.forEach(territory => {
+		territory.polygon.strokeColor = "black"; // Reset stroke color
+	});
+	if (DEBUG) console.log("All lands deselected");
 	if (touch.selected === 2) { // Only clear selection if land was selected
 		touch.selected = 0;
 		touch.which = 0;
@@ -100,8 +116,10 @@ function pickUnit(id) {
 }
 function pickLand(id){ //picks a land by id
 	unpickAllUnits();
+	unpickAllLands();
 	touch.selected=2;touch.which=id;
-	if(DEBUG) console.log("Select land: "+id);
-	// Keep track of terrain selected
-	// Highlight terrain
+	// Select the specific territory
+	const territory = territories.get(id);
+	territory.polygon.strokeColor = "red"; // Highlight selected territory
+	if (DEBUG) console.log("Selected territory:", id);
 }
