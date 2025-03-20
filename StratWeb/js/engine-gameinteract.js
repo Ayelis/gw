@@ -25,7 +25,7 @@ export function toggleSelect(point){ //temporary, select toggling, for testing o
 	let lastUnitSelected = false; // Reset the flag
 	let nextIndex = 0;
 	if (touch.selected === 1) {
-		if (DEBUG) console.log("Something's selected. Find out what!");
+		if (DEBUG) console.log("A troop's selected. Find out which!");
 		// Find the index of the currently selected unit
 		nextIndex = nearbyUnits.findIndex(u => u.id === touch.which) + 1;
 		if (DEBUG) console.log("Current: "+touch.which+" | Next: "+nextIndex+" | Nearby: "+nearbyUnits.length);
@@ -46,10 +46,11 @@ export function toggleSelect(point){ //temporary, select toggling, for testing o
 			if (territory) {
 				if (DEBUG) console.log("Selected territory:", territory.id);
 				pickLand(territory.id); // Select the clicked territory
-			} else {
-				if (DEBUG) console.log("Clicked on ocean or non-selectable area, all lands deselected");
-				unpickAllLands(); // Deselect all lands
 			}
+		}else{
+			if (DEBUG) console.log("Clicked on ocean or non-selectable area, all lands deselected");
+			unpickAllUnits(); // Deselect all troops
+			unpickAllLands(); // Deselect all lands
 		}
 		return;
 	}
