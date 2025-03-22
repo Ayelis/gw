@@ -27,6 +27,7 @@ Mobile:
     .
     ├── game-ideation           # Wireframes for mobile
     ├── game-resources          # Images, sfx, fonts
+    ├── MapTool                 # A Tool to create/edit maps
     ├── Strat                   # The Client Mobile App
     ├── StratServ               # The Server Application
     ├── StratWeb                # The HTML5 Web Client

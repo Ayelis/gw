@@ -87,38 +87,31 @@ territory-creator/
 
 ## Known Issues
 
-1. **Mouse Click Offset**:
-   - The mouse click coordinates are offset by 50% vertically and horizontally. This is likely due to incorrect canvas scaling or coordinate mapping in `territory-creator.js`.
+1. **Missing Save information/metadata**:
+   - The Save feature doesn't save any extra data about the map.
 
-2. **Next Button Behavior**:
-   - The "Next" button currently clears the canvas and starts a new territory instead of adding a new territory on the same screen.
-
-3. **Prev Button Functionality**:
-   - The "Prev" button is not yet implemented. It should allow users to navigate back to the previous territory.
+2. **Missing Load button/screen**:
+   - There's no Load button or functionality.
 
 ---
 
 ## Future Improvements
 
-1. **Fix Mouse Click Offset**:
-   - Investigate and fix the coordinate mapping issue in `territory-creator.js`.
+1. **Territory Editing**:
+   - Allow users to edit existing territories (e.g., move points).
 
-2. **Improve Navigation**:
-   - Update the "Next" button to add a new territory without clearing the canvas.
-   - Implement the "Prev" button to allow users to revisit and edit previous territories.
-
-3. **Territory Editing**:
-   - Allow users to edit existing territories (e.g., move points, change terrain type).
-
-4. **Map Loading**:
+2. **Map Loading**:
    - Add functionality to load and edit saved maps from the database.
 
-5. **Enhanced UI**:
+3. **Enhanced UI**:
    - Add a sidebar to display all territories in the current map.
    - Include a "Delete Territory" button.
 
-6. **Export Maps**:
-   - Add functionality to export maps as JSON or image files.
+4. **Export Maps**:
+   - Add functionality to export maps as JSON or vector image files.
+
+5. **Import Maps**:
+   - Add functionality to import maps from JSON or vector image files.
 
 ---
 

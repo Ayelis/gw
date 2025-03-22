@@ -1,38 +1,56 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Territory Creator</title>
-  <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/paper.js/0.12.15/paper-full.min.js"></script>
-  <style>
-    canvas {
-      border: 1px solid black;
-    }
-    .controls {
-      margin-top: 10px;
-    }
-  </style>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Territory Creator</title>
+	<script type="text/javascript">
+		const originalAddEventListener = EventTarget.prototype.addEventListener;
+		EventTarget.prototype.addEventListener = function(type, listener, options) {
+		  if (type === "touchstart" || type === "touchmove") {
+			options = { passive: true, ...options };
+		  }
+		  originalAddEventListener.call(this, type, listener, options);
+		};
+	</script>
+	<script type="text/javascript" src="./paper-full.min.js"></script>
+	<style>
+		canvas {
+			width: 600px;
+			height: 400px;
+			border: 1px solid black;
+		}
+		.controls {
+			margin-top: 10px;
+		}
+	</style>
 </head>
 <body>
-  <h1>Territory Creator</h1>
-  <canvas id="territoryCanvas" resize willReadFrequently></canvas>
-  <div class="controls">
-    <label for="terrainType">Terrain Type:</label>
-    <select id="terrainType">
-      <option value="0">Urban</option>
-      <option value="1">Grassland</option>
-      <option value="2">Desert</option>
-      <option value="3">Mountain</option>
-      <option value="4">Forest</option>
-      <option value="5">Swamp</option>
-      <option value="6">Tundra</option>
-      <!-- Add more terrain types as needed -->
-    </select>
-    <button id="prevButton">Prev</button>
-    <button id="nextButton">Next</button>
-    <button id="saveButton">Save</button>
-  </div>
-  <script type="text/javascript" src="territory-creator.js"></script>
+	<h1>Territory Creator</h1>
+	<canvas id="territoryCanvas" willReadFrequently></canvas>
+	<table class="controls">
+		<tr>
+			<td>Terrain</td>
+			<td><label for="terrainType">Type:</label>
+			<select id="terrainType">
+			<option value="0">Urban</option>
+			<option value="1">Grassland</option>
+			<option value="2">Desert</option>
+			<option value="3">Mountain</option>
+			<option value="4">Forest</option>
+			<option value="5">Swamp</option>
+			<option value="6">Tundra</option>
+			<!-- Add more terrain types as needed -->
+			</select></td>
+			<td><button id="prevButton">Prev</button>
+			<button id="nextButton">Next</button>
+			</td>
+		</tr><tr>
+			<td>Map</td>
+			<td></td>
+			<td><button id="saveButton">Save</button></td>
+		</tr>
+	</table>
+	<script type="module" src="index.js"></script>
 </body>
 </html>
