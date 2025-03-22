@@ -19,7 +19,7 @@ export const player = {
 //Create a territory grid for testing purposes
 // Territory size and spacing
 const territorySize = 100; // Width and height of each territory
-const spacing = 2; // Space between territories
+const spacing = 0; // Space between territories
 const margin = 10; // Space around territories
 
 export function initializeTerritories() {

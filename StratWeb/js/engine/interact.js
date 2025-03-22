@@ -84,6 +84,15 @@ export function buildUnit(id,pt,units){ //id, point
 		if(DEBUG) console.log("ERROR: Unit ["+id+"] already exists!");
 	}
 }
+function highlight(territory){
+	territory.polygon.bringToFront();
+	territory.polygon.strokeColor = "red"; // Highlight selected territory
+	//Don't forget to move everything else up
+	units.forEach(unit=>{
+		unit.point.bringToFront();
+	});
+	//TO-DO: raise nodes, paths, unit images, etc
+}
 function unitIdExists(id, unitArray) {
 	return unitArray.some(unit => unit.id === id);
 }
@@ -135,7 +144,7 @@ function pickLand(id){ //picks a land by id
 	touch.selected=2;touch.which=id;
 	// Select the specific territory
 	const territory = territories.get(id);
-	territory.polygon.strokeColor = "red"; // Highlight selected territory
+	highlight(territory);
 	// Dispatch the selectionMade event
 	swapPanelLand(id);
 	document.dispatchEvent(selectionMadeEvent);

@@ -19,7 +19,7 @@ export class Territory {
       closed: true,
       fillColor: this.getTerrainColor(),
       strokeColor: "black",
-      strokeWidth: 2
+      strokeWidth: 1
     });
 
     // Store a reference to the territory in the polygon for easy lookup
