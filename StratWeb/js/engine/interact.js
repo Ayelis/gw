@@ -1,8 +1,8 @@
-import { DEBUG } from './index.js';
-import { touch,units,territories } from './engine-gamestate.js';
-import { drawUnitPoint } from "./engine-renderer.js";
-import { Unit } from "./class-unit.js"; //(id, point, x, y, type, speed, owner, graphic)
-import { Territory } from "./class-territory.js"; //(id, owner, terrainType, originCountry, coordinates)
+import { 	DEBUG, Unit, Territory, touch, units, territories,
+			drawUnitPoint }
+	from "./index.js";
+//Unit: (id, point, x, y, type, speed, owner, graphic)
+//Territory: (id, owner, terrainType, originCountry, coordinates)
 
 //Selection variables for toggleSelect
 const selectionRadius = 50;

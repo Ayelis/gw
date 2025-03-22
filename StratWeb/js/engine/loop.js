@@ -1,4 +1,4 @@
-import { units } from './engine-gamestate.js';
+import { units } from './index.js';
 
 export function gameLoop(delta) {
   // Update all units

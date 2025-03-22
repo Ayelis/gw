@@ -1,4 +1,4 @@
-import { Territory } from './class-territory.js';
+import { Territory } from './index.js';
 
 export let tool = new paper.Tool();
 export let units = [];

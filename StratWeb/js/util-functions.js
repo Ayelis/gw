@@ -9,10 +9,7 @@ EventTarget.prototype.addEventListener = function(type, listener, options) {
 
 $(document).ready(function() {
 	// Play the audio when logo is clicked, if not playing already
-    var audio = document.getElementById("backgroundMusic");
-    $("#top img").click(function() {
-		audio.play();
-	});
+		document.getElementById("backgroundMusic")?.play();
 
     // Hide panels initially
 	$(".panel").hide();
@@ -20,9 +17,7 @@ $(document).ready(function() {
 
     $("#joinGameButton").click(function() {
         // Stop the audio if it's playing
-        if (!audio.paused) {
-            audio.pause();
-        }
+				document.getElementById("backgroundMusic")?.pause();
         // Hide panel1 and show panel2
 		console.log("hiding panels, showing panel 2");
 		$(".panel").hide();

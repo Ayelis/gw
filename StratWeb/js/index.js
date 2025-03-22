@@ -1,7 +1,6 @@
 // Core imports
-import { initializeGame } from './engine-gameinit.js';
-import { gameLoop } from './engine-gameloop.js';
-import { initializeTerritories } from './engine-gamestate.js';
+import { initializeGame, gameLoop, initializeTerritories }
+	from './engine/index.js';
 
 // Debug mode
 export const DEBUG = true;

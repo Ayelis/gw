@@ -1,7 +1,6 @@
-import { DEBUG } from './index.js';
-import { touch,units } from './engine-gamestate.js';
-import { translateView, doCanvasResize } from "./engine-renderer.js";
-import { toggleSelect,buildUnit } from "./engine-gameinteract.js";
+import { 	DEBUG, touch, units, translateView, doCanvasResize,
+			toggleSelect, buildUnit }
+	from './index.js';
 
 export const buttonMove = document.getElementById("move");
 export const buttonBuild = document.getElementById("build");

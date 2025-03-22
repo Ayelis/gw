@@ -1,7 +1,4 @@
-import { DEBUG } from './index.js';
-import { initializeGame } from './engine-gameinit.js';
-import { gameLoop } from './engine-gameloop.js';
-import { paths } from './engine-gamestate.js';
+import { DEBUG, paths } from './index.js';
 
 const canvas = document.getElementById("myCanvas");
 
