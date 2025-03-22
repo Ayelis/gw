@@ -85,7 +85,7 @@ export function buildUnit(id,pt,units){ //id, point
 	}
 }
 function highlight(territory){
-	territory.bringToFront();
+	territory.polygon.bringToFront();
 	territory.polygon.strokeColor = "red"; // Highlight selected territory
 	//Don't forget to move everything else up
 	units.forEach(unit=>{
