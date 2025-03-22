@@ -8,7 +8,17 @@ import { 	DEBUG, Unit, Territory, touch, units, territories,
 const selectionRadius = 50;
 let lastClickPoint;
 let nearbyUnits = [];
+//Interface control variables
+let isSelecting = false; // Track if the user is selecting
+let isNavAnimating = false; // Track if the nav bar is animating
+let isPanelAnimating = false; // Track if the info panel is animating
+let isInfoPanelVisible = false; // Track if the panel is currently visible
+const nav = document.querySelector('nav');
+const infoPanel = document.getElementById('infoPanel');
+const selectionMadeEvent = new CustomEvent('selectionMade', {});
+const selectionClearedEvent = new CustomEvent('selectionCleared', {});
 
+//Selection logic
 export function toggleSelect(point){ //temporary, select toggling, for testing only!
 	if (DEBUG) console.log("Select X: "+point.x+", Y: "+point.y);
 
@@ -51,6 +61,7 @@ export function toggleSelect(point){ //temporary, select toggling, for testing o
 			if (DEBUG) console.log("Clicked on ocean or non-selectable area, all lands deselected");
 			unpickAllUnits(); // Deselect all troops
 			unpickAllLands(); // Deselect all lands
+			document.dispatchEvent(selectionClearedEvent);
 		}
 		return;
 	}
@@ -102,6 +113,7 @@ function pickNone(){
 	touch.selected=0;
 	touch.which=0;
 	if(DEBUG) console.log("Select Nothing!");
+	document.dispatchEvent(selectionClearedEvent);
 }
 function pickUnit(id) {
 	unpickAllUnits(); //deselect everything
@@ -111,9 +123,11 @@ function pickUnit(id) {
 	if (id >= 0) { //select a unit
 		unpickAllLands(); //deselect everything
 		units[id].point.fillColor = 'red'; // Highlight selected unit
-	} else {
-		pickLand(0);
+//	} else {
+//		pickLand(0);
 	}
+	swapPanelUnit(id);
+	document.dispatchEvent(selectionMadeEvent);
 }
 function pickLand(id){ //picks a land by id
 	unpickAllUnits();
@@ -122,5 +136,104 @@ function pickLand(id){ //picks a land by id
 	// Select the specific territory
 	const territory = territories.get(id);
 	territory.polygon.strokeColor = "red"; // Highlight selected territory
+	// Dispatch the selectionMade event
+	swapPanelLand(id);
+	document.dispatchEvent(selectionMadeEvent);
 	if (DEBUG) console.log("Selected territory:", id);
 }
+
+//InfoPanel logic
+function swapPanelLand(id) {
+	const infoPanel = document.getElementById('infoPanel');
+	infoPanel.innerHTML = `
+		<p>Selected Territory Info: ID ${id} [Click Build then click map to place a unit]</p>
+		<button id="build" data-emoji="🏗️">Build</button>
+	`;
+}
+function swapPanelUnit(id) {
+	const infoPanel = document.getElementById('infoPanel');
+	infoPanel.innerHTML = `
+		<p>Selected Unit Info: ID ${id} [Click Move then click map to move a unit]</p>
+		<button id="move" data-emoji="➡️">Move</button>
+	`;
+}
+
+//Animation logic
+function onSelect() {
+	isSelecting = true;
+
+	if (isNavAnimating || isPanelAnimating || isInfoPanelVisible)
+		return; // Ignore if an animation is already running
+	//Or if something is already selected
+
+	isNavAnimating = true; // Mark nav bar animation as started
+
+	// Slide nav bar down
+	nav.classList.add('slide-down');
+
+	// Wait for the nav bar to finish sliding down
+	nav.addEventListener('transitionend', () => {
+		isNavAnimating = false; // Mark nav bar animation as finished
+
+		if (!isInfoPanelVisible && isSelecting) {
+			isPanelAnimating = true; // Mark panel animation as started
+
+			// Slide info panel up
+			infoPanel.classList.add('slide-up');
+
+			// Wait for the panel to finish sliding up
+			infoPanel.addEventListener('transitionend', () => {
+				if (!isSelecting) {
+					// If deselected during the slide-up, reverse both animations
+					infoPanel.classList.remove('slide-up');
+					nav.classList.remove('slide-down');
+					isPanelAnimating = false;
+					isInfoPanelVisible = false;
+					return;
+				}
+
+				isPanelAnimating = false; // Mark panel animation as finished
+				isInfoPanelVisible = true; // Mark panel as visible
+			}, { once: true }); // Only run this listener once
+		}
+	}, { once: true }); // Only run this listener once
+}
+
+function onDeselect() {
+	isSelecting = false;
+
+	if (isNavAnimating) {
+		// If the nav bar is still sliding down, reverse it immediately
+		nav.classList.remove('slide-down');
+		isNavAnimating = false; // Mark nav bar animation as finished
+		return; // Exit early to prevent the panel from sliding up
+	}
+
+	if (isPanelAnimating) {
+		// If the panel is sliding up, reverse both animations immediately
+		infoPanel.classList.remove('slide-up');
+		nav.classList.remove('slide-down');
+		isPanelAnimating = false; // Mark panel animation as finished
+		isInfoPanelVisible = false; // Mark panel as hidden
+		return;
+	}
+
+	if (!isInfoPanelVisible) return; // Ignore if no panel is visible
+
+	isPanelAnimating = true; // Mark panel animation as started
+
+	// Slide info panel down
+	infoPanel.classList.remove('slide-up');
+
+	// Wait for the panel to finish sliding down
+	infoPanel.addEventListener('transitionend', () => {
+		isPanelAnimating = false; // Mark panel animation as finished
+		isInfoPanelVisible = false; // Mark panel as hidden
+
+		// Slide nav bar up
+		nav.classList.remove('slide-down');
+	}, { once: true }); // Only run this listener once
+}
+
+document.addEventListener('selectionMade', onSelect); // Trigger on selection
+document.addEventListener('selectionCleared', onDeselect); // Trigger on deselect

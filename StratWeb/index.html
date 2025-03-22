@@ -26,18 +26,19 @@
 			</section>
 			<section class="panel" id="panel2" style="display: none;">
 				<canvas id="myCanvas"></canvas>
-				<aside class="buttons">
-					<input id="build" type=button value="Build">
-					<input id="move" type=button value="Move">
-				</aside>
 
 				<nav>
-					<button data-window="nation" data-emoji="🏙️">Nation</button>
-					<button data-window="policy" data-emoji="🏛️">Policy</button>
-					<button data-window="upgrades" data-emoji="🛠️">Upgrades</button>
-					<button data-window="exchange" data-emoji="💱">Exchange</button>
-					<button data-window="settings" data-emoji="⚙️">Settings</button>
+					<ul>
+						<li><button data-window="nation" data-emoji="🏙️">Nation</button></li>
+						<li><button data-window="policy" data-emoji="🏛️">Policy</button></li>
+						<li><button data-window="upgrades" data-emoji="🛠️">Upgrades</button></li>
+						<li><button data-window="exchange" data-emoji="💱">Exchange</button></li>
+						<li><button data-window="settings" data-emoji="⚙️">Settings</button></li>
+					</ul>
 				</nav>
+				<sidebar id="infoPanel">
+					<!-- Infopanel content added dynamically -->
+				</sidebar>
 				<section id="nation-window" class="window">
 					<h2>Nation</h2>
 					<button class="close-btn">×</button>

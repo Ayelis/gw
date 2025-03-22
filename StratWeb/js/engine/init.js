@@ -1,10 +1,10 @@
-import {  DEBUG, setupInputHandlers, drawPath,
+import {	DEBUG, setupInputHandlers, drawPath,
           player, tool, touch, paths }
-  from './index.js';
+	from './index.js';
 
 export function initializeGame() {
-  // Set up input handlers
-  setupInputHandlers(tool, touch);
+	// Set up input handlers
+	setupInputHandlers(tool, touch);
 
-  if(DEBUG) console.log("Game initialized!");
+	if(DEBUG) console.log("Game initialized!");
 }

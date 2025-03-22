@@ -1,6 +1,7 @@
 html, body, canvas{
 	height:100vh;
 	width:100vw;
+	overflow-y:hidden;
 }
 body{
 	margin:0px;
@@ -12,28 +13,70 @@ canvas{
 	display:block;
 	background-image:url('../img/oceanNew.gif');
 }
-.buttons{
-	position:absolute;
-	left:10px;
-	top:0px;
+button{
+	border: 2px solid #404040; /* Darker border */
+	background: linear-gradient(to bottom, #808080, #606060); /* Gray gradient */
 }
-nav{
-	position:absolute;
-	bottom:1px;
-	margin:auto;
-	text-align:center;
+nav {
+	position: absolute;
+	bottom: 1px;
+	margin: auto;
+	text-align: center;
+	width: 100%;
+	transition: transform 0.2s ease-in-out; /* Slide animation */
+}
+#infoPanel {
+	position: fixed;
+	bottom: -120px; /* Start off-screen */
+	width: 100%;
+	height: 120px; /* Adjust height as needed */
+	background: #333;
+	color: white;
+	transition: transform 0.4s ease-in-out; /* Slide animation */
+}
+/* Slide nav bar down */
+nav.slide-down {
+	transform: translateY(100%);
+}
+/* Slide info panel up */
+#infoPanel.slide-up {
+	transform: translateY(-120px); /* Adjust to match height */
+}
+nav ul {
+	display: flex;
+	list-style: none;
+	padding: 0;
+	margin: 0;
+	gap: 0px; /* Space between buttons */
+	justify-content: center; /* Center buttons */
+}
+nav li {
+	display: flex;
+	flex: 1; /* Make buttons fill available space */
+}
+nav button {
+	flex: 1; /* Make buttons fill available space */
+	text-align: center; /* Center button text */
 	width:100%;
 }
-nav button::before {
+button::before {
 	content: attr(data-emoji) " ";
 }
+nav button:hover {
+	background: linear-gradient(to bottom, #909090, #707070); /* Lighter gradient on hover */
+	transform: translateY(-2px); /* Slight lift on hover */
+}
+nav button:active {
+	transform: translateY(0); /* Reset lift when clicked */
+}
+/* Responsive styles */
 @media (max-width: 1090px) {
 	nav button {
 		font-size: 0; /* Hide text */
 	}
 	nav button::before {
 		font-size: initial; /* Keep emoji visible */
-	font-size: 28px; /* Adjust size as needed */
+		font-size: 28px; /* Adjust size as needed */
 	}
 }
 /* Style for the window panels */

@@ -2,9 +2,6 @@ import { 	DEBUG, touch, units, translateView, doCanvasResize,
 			toggleSelect, buildUnit }
 	from './index.js';
 
-export const buttonMove = document.getElementById("move");
-export const buttonBuild = document.getElementById("build");
-
 let isPanning = false;
 let startPoint = null;
 const panThreshold = 10; // Min pixels to trigger panning
@@ -38,14 +35,15 @@ function doTouch(point){
 }
 function doModeBuild(){
 	if(DEBUG) console.log("[Build Mode selected]");
-	buttonMove.value="Move";
-	buttonBuild.value="Build!";
+	document.getElementById("build").innerHTML=("Build!");
 	touch.mode=0;
 }
 function doModeSelect(){
 	if(DEBUG) console.log("[Select Mode selected]");
-	buttonMove.value="Move";
-	buttonBuild.value="Build";
+	let move=document.getElementById("move");
+	let build=document.getElementById("build");
+	if(move) move.innerHTML=("Move");
+	if(build) build.innerHTML=("Build");
 	if(touch.mode!=1){
 		touch.mode=1;
 	}
@@ -61,8 +59,7 @@ function doModeMove(){
 		if(DEBUG) console.log("Unit not selected! Canceling...");
 		return;
 	}
-	buttonBuild.value="Build";
-	buttonMove.value="Move!";
+	document.getElementById("move").innerHTML=("Move!");
 	touch.mode=2;
 }
 function onMouseWheel(event) {
@@ -115,11 +112,14 @@ export function setupInputHandlers(tool, button, touch) {
 			doTouch(event.point); // Call existing touch handler
 		};
 	}
-	buttonBuild.addEventListener("click", ()=>{
-		doModeBuild();
-	});
-	buttonMove.addEventListener("click", ()=>{
-		doModeMove();
+	// Add a single event listener to the infoPanel
+	const infoPanel = document.getElementById('infoPanel');
+	infoPanel.addEventListener('click', (event) => {
+		if (event.target.id === 'build') {
+			doModeBuild();
+		} else if (event.target.id === 'move') {
+			doModeMove();
+		}
 	});
 	window.addEventListener("resize", doCanvasResize);
 	document.addEventListener("wheel", (event) => {
