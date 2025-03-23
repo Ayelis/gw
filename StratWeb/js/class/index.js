@@ -1,4 +1,4 @@
 // js/classes/index.js
 export { DEBUG } from '../index.js';
-export * from './unit.js';
-export * from './territory.js';
+export { Unit } from './unit.js';
+export { Territory } from './territory.js';
